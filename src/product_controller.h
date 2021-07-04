@@ -6,6 +6,6 @@ void listProduct();
 void addProduct();
 void deleteProduct();
 void updateProduct();
-void initiation();
+void initiate();
 
 #endif

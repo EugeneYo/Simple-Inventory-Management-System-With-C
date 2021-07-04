@@ -19,7 +19,7 @@ void listProduct()
         printf("No products to view\n");
         return;
     }
-    printf(" \t\t\t\t *****  INVENTORY *****\n");
+    printf(" \t\t\t***** INVENTORY *****\n");
     printf("------------------------------------------------------------------\n");
     printf("S.N.|    %-5s|  %-10s|  %-10s| %-10s|  %-10s|\n", "ID", "Name", "Genre", "Quantity", "Price");
     printf("------------------------------------------------------------------\n");
@@ -28,7 +28,7 @@ void listProduct()
     { 
         printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f|\n", i + 1, prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod[i].price);
     }
-    printf("------------------------------------------------------------------\n");
+    printf("------------------------------------------------------------------\n\n");
 }
 void addProduct()
 {
@@ -89,6 +89,8 @@ void updateProduct()
     unsigned int id;
     unsigned int exist = 0;
     unsigned int item;
+    char *input = (char *)malloc(128 * sizeof(char));
+    
     listProduct();
     printf("Please select the ID of the product to update : ");
     getDigit(&id);
@@ -97,7 +99,6 @@ void updateProduct()
     {
         if (prod[i].id == id)
         {
-            prod[i] = prod[i + 1];
             exist = 1;
             item = i;
         }
@@ -105,22 +106,51 @@ void updateProduct()
     if (exist)
     {
         prod[item].id = id;
-
-        printf("Product Name: ");
+        printf("- Type 'Enter' to skip and the data will remain the same.\n");
+        printf("%22s%10s -> %-10s\n", "","[Old]", "[New]");
+        printf("%-20s: %10s -> ", "Product Name",prod[item].name);
         fflush(stdin);
-        gets(prod[item].name);
+        fgets(input, 100, stdin);
+        if(*input != '\n'){
+            input[strcspn(input, "\n")] = 0;
+            strcpy(prod[item].name, input);
+        }
 
-        printf("Product Genre: ");
-        fflush(stdin);
-        gets(prod[item].genre);
 
-        printf("Product Quantity: ");
-        getDigit(&prod[item].quantity);
+        printf("%-20s: %10s -> ","Product Genre",prod[item].genre);
         fflush(stdin);
+        fgets(input, 100, stdin);
+        if(*input != '\n'){
+            input[strcspn(input, "\n")] = 0;
+            strcpy(prod[item].genre, input);
+        }
 
-        printf("Product Price: ");
-        getFloat(&prod[item].price);
+        printf("%-20s: %10d -> ","Product Quantity",prod[item].quantity);
         fflush(stdin);
+        fgets(input, 100, stdin);
+        if(*input != '\n'){
+            input[strcspn(input, "\n")] = 0;
+            if(atoi(input)==0){
+                printf("Invalid input ! Enter again: ");
+                getDigit(&prod[item].quantity);
+            }else{
+                prod[item].price = atoi(input);
+            }
+        }
+    
+        printf("%-20s: %10.2f -> ","Product Price",prod[item].price );
+        fflush(stdin);
+        fgets(input, 100, stdin);
+        if(*input != '\n'){
+            input[strcspn(input, "\n")] = 0;
+            if(atof(input)==0){
+                printf("Invalid input ! Enter again: ");
+                getFloat(&prod[item].price);
+            }else{
+                prod[item].price = atof(input);
+            }
+        }
+        
         printf("Product with ID %d updated successfully.\n", id);
     }
     else
@@ -130,7 +160,7 @@ void updateProduct()
     writeFile(prod,total);
 }
 
-void initiation(){
+void initiate(){
     total = readFile(prod);
     printf("Total : %d\n", total);
     uuid = prod[total-1].id;

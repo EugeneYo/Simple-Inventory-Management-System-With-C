@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "src/input_validation.h"
 #include "src/product_controller.h"
 
 int main(void)
 {
-    initiation();
+    initiate();
     unsigned short exit = 0;
-    unsigned short input;
+    unsigned int *input;
 
     while (!exit)
     {
@@ -21,15 +22,15 @@ int main(void)
         printf("| 0 | %-25s | \n", "Exit program");
         printf("--------------------------------- \n");
         printf("Actions : ");
-        scanf("%d", &input);
+        getDigit(input);
 
         fflush(stdin);
         while (1)
         {
-            switch (input)
+            switch (*input)
             {
             case 0:
-                printf("Exiting. \n");
+                printf("Exiting Program.\n");
                 exit = 1;
                 break;
             case 1:
@@ -45,11 +46,11 @@ int main(void)
                 updateProduct();
                 break;
             case 4:
-                printf("Delete Product");
+                printf("Delete Product\n");
                 deleteProduct();
                 break;
             default:
-                printf("Huh?");
+                printf("Options unavailable\n");
                 break;
             }
             break;
