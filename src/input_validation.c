@@ -6,8 +6,8 @@
 
 void getDigit(unsigned int *digit)
 {
-    char *p = (char *)malloc(sizeof(char));
-    char *input = (char *)malloc(128 * sizeof(char));
+    char *p;
+    char input[128];
     unsigned short ask = 1;
     fflush(stdin);
     while (ask)
@@ -16,14 +16,12 @@ void getDigit(unsigned int *digit)
         *digit = strtol(input, &p, 10);
         ask = (p == input || *p != '\n') ? printf("Invalid input ! Enter again: ") : 0;
     }
-    free(p);
-    free(input);
 }
 
 void getFloat(float *number)
 {
-    char *p = (char *)malloc(sizeof(char));
-    char *input = (char *)malloc(128 * sizeof(char));
+    char *p;
+    char input[128];
     unsigned short ask = 1;
     fflush(stdin);
     while (ask)
@@ -32,6 +30,4 @@ void getFloat(float *number)
         *number = strtof(input, &p);
         ask = (p == input || *p != '\n') ? printf("Invalid input ! Enter again: ") : 0;
     }
-    free(p);
-    free(input);
 }

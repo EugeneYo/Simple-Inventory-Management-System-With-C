@@ -12,7 +12,7 @@ unsigned int total = 0;
 unsigned int uuid = 0;
 
 
-void listProduct()
+void listProduct(Product *prod, unsigned int total)
 {
     if (total == 0)
     {
@@ -30,6 +30,26 @@ void listProduct()
     }
     printf("------------------------------------------------------------------\n\n");
 }
+
+void viewProducts()
+{
+    if (total == 0)
+    {
+        printf("No products to view\n");
+        return;
+    }
+    printf(" \t\t\t***** INVENTORY *****\n");
+    printf("------------------------------------------------------------------\n");
+    printf("S.N.|    %-5s|  %-10s|  %-10s| %-10s|  %-10s|\n", "ID", "Name", "Genre", "Quantity", "Price");
+    printf("------------------------------------------------------------------\n");
+
+    for (int i = 0; i < total; i++)
+    { 
+        printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f|\n", i + 1, prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod[i].price);
+    }
+    printf("------------------------------------------------------------------\n\n");
+}
+
 void addProduct()
 {
     prod[total].id = uuid + 1;
@@ -51,7 +71,7 @@ void addProduct()
     fflush(stdin);
     total++;
     uuid++;
-    listProduct();
+    listProduct(prod, total);
     writeFile(prod, total);
 }
 
@@ -59,7 +79,7 @@ void deleteProduct()
 {
     unsigned int id;
     unsigned int exist = 0;
-    listProduct();
+    listProduct(prod, total);
     printf("Please select the ID of the product to delete : ");
     getDigit(&id);
 
@@ -91,7 +111,7 @@ void updateProduct()
     unsigned int item;
     char *input = (char *)malloc(128 * sizeof(char));
     
-    listProduct();
+    listProduct(prod, total);
     printf("Please select the ID of the product to update : ");
     getDigit(&id);
 
@@ -160,9 +180,122 @@ void updateProduct()
     writeFile(prod,total);
 }
 
+void searchProduct(unsigned int action)
+{
+    Product result[10];
+    unsigned int digit;
+    char *string = (char *)malloc(128 * sizeof(char));
+    float number = 0;
+    unsigned int k = 0;
+
+    if (action == 1)
+    {
+        printf("ID : ");
+        getDigit(&digit);
+        // for (int i = 0; i < 10; i++)
+        // {
+        //     result[i].id = 0;
+        // }
+        for (int i = 0; i < total; i++)
+        {
+            if (prod[i].id == digit)
+            {
+                result[k] = prod[i];
+                k++;
+            }
+        }
+        listProduct(result, k);
+        k = 0;
+    }
+    else if (action == 2)
+    {
+        printf("Name : ");
+        fflush(stdin);
+        gets(string);
+        // for (int i = 0; i < 10; i++)
+        // {
+        //     result[i].id = 0;
+        // }
+        for (int i = 0; i < total; i++)
+        {
+            if (strcmp(prod[i].name, string) == 0)
+            {
+                result[k] = prod[i];
+                k++;
+            }
+        }
+        listProduct(result,k);
+        k = 0;
+    }
+    else if (action == 3)
+    {
+        printf("Genre : ");
+        fflush(stdin);
+        gets(string);
+        // for (int i = 0; i < 10; i++)
+        // {
+        //     result[i].id = 0;
+        // }
+        for (int i = 0; i < total; i++)
+        {
+            if (strcmp(prod[i].genre, string) == 0)
+            {
+                result[k] = prod[i];
+                k++;
+            }
+        }
+        listProduct(result,k);
+        k = 0;
+    }
+    else if (action == 4)
+    {
+        printf("Quantity : ");
+        getDigit(&digit);
+        // for (int i = 0; i < 10; i++)
+        // {
+        //     result[i].id = 0;
+        // }
+        for (int i = 0; i < total; i++)
+        {
+            if (prod[i].quantity == digit)
+            {
+                result[k] = prod[i];
+                k++;
+            }
+        }
+        listProduct(result, k);
+        k = 0;
+    }
+    else if (action == 5)
+    {
+        printf("Price : ");
+        getFloat(&number);
+        // for (int i = 0; i < 10; i++)
+        // {
+        //     result[i].id = 0;
+        // }
+        for (int i = 0; i < total; i++)
+        {
+            if (prod[i].price == number)
+            {
+                result[k] = prod[i];
+                k++;
+            }
+        }
+        listProduct(result,k);
+        k = 0;
+    }
+
+    free(string);
+}
+
 void initiate(){
     total = readFile(prod);
+    if(total == 0){
+        uuid = 0;
+    }else{
+        uuid = prod[total-1].id;
+    }
     printf("Total : %d\n", total);
-    uuid = prod[total-1].id;
     printf("UUID : %d\n", uuid);
 }

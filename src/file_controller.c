@@ -3,16 +3,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #include "product.h"
 #include "product_controller.h"
-
 
 int readFile(Product *prod)
 {
     int n = 0;
     int i;
     FILE *f;
-    f = fopen("GameInventory.txt", "r");
+    if((f = fopen("GameInventory.txt", "r"))==NULL){
+        f = fopen("GameInventory.txt", "w");
+        fclose(f);
+    };
     char line[256];
     while (fgets(line, sizeof(line), f))
     {
