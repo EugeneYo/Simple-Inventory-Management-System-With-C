@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define CSV "Inventory.csv"
+#define TXT "Inventory.txt"
+
 typedef struct
 {
     unsigned int id;       //2 bytes
@@ -46,11 +49,11 @@ void getFloat(float *number)
         ask = (p == input || *p != '\n') ? 1 && printf("Invalid input ! Enter again : ") : 0;
     }
 }
+
 // ----------------------------------------------------------------------------------------- READ and WRITE
 unsigned int totalProduct(){
     int n = 0;
-    FILE *f;
-    f = fopen("PointerInventory.txt", "r");
+    FILE *f = fopen(TXT, "r");
     char line[256];
     while (fgets(line, sizeof(line), f))
     {
@@ -63,13 +66,11 @@ unsigned int totalProduct(){
     fclose(f);
     return n;
 }
+
 void writeFile(Product *prod, unsigned int *total)
 {
     int i;
-    FILE *f;
-    f = fopen("PointerInventory.txt", "w");
-    if (f == NULL)
-        return;
+    FILE *f = fopen(TXT, "w");
     for (i = 0; i < *total; i++)
     {
         fprintf(f, "%d\n", (prod + i)->id);
@@ -82,11 +83,11 @@ void writeFile(Product *prod, unsigned int *total)
     }
     fclose(f);
 }
+
 void readFile(Product *prod)
 {
     int n = 0;
-    FILE *f;
-    f = fopen("PointerInventory.txt", "r");
+    FILE *f = fopen(TXT, "r");
     char line[256];
     char *temp;
     while (fgets(line, sizeof(line), f))
@@ -111,6 +112,69 @@ void readFile(Product *prod)
     }
     fclose(f);
 }
+
+unsigned int totalProductCSV()
+{
+    int n = 0;
+    FILE *f = fopen(CSV, "r");
+    char line[256];
+    while (fgets(line, sizeof(line), f))
+        n++;
+    fclose(f);
+    return n;
+}
+
+void writeCSV(Product *prod, unsigned int *total)
+{
+    FILE *f = fopen(CSV, "w");
+    fprintf(f, "%s, %s, %s, %s, %s\n", "ID", "Name", "Genre", "Quantity", "Price");
+    for (int i = 0; i < *total; i++)
+    {
+        fprintf(f, "%d, %s, %s, %d, %f\n", prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod[i].price);
+    }
+    fclose(f);
+}
+
+void readCSV(Product *prod)
+{
+    FILE *f = fopen(CSV, "r");
+    char string[1024];
+    int row = 0;
+    int column = 0;
+    while (fgets(string, 1024, f))
+    {
+        column = 0;
+        row++;
+        
+        if (row == 1)
+            continue;
+
+        // Splitting the data
+        char *value = strtok(string, ", ");
+        while (value)
+        {
+            if (column == 0)
+                prod[row - 1].id = atoi(value);
+
+            if (column == 1)
+                strcpy(prod[row - 1].name, value);
+
+            if (column == 2)
+                strcpy(prod[row - 1].genre, value);
+
+            if (column == 3)
+                prod[row - 1].quantity = atoi(value);
+
+            if (column == 4)
+                prod[row - 1].price = atof(value);
+
+            value = strtok(NULL, ", ");
+            column++;
+        }
+    }
+    fclose(f);
+}
+
 // ----------------------------------------------------------------------------------------- CRUD
 void listProduct(Product *prod, unsigned int *total)
 {
@@ -132,16 +196,19 @@ void listProduct(Product *prod, unsigned int *total)
     }
     printf("------------------------------------------------------------------\n\n");
 }
+
 void addProduct(Product *prod, unsigned int *total, unsigned int *uid)
 {
 
     prod[*total].id = *uid + 1;
-
+    fflush(stdin);
     printf("Product Name: ");
-    gets(prod[*total].name);
+    fgets(prod[*total].name, 100, stdin);
+    prod[*total].name[strcspn(prod[*total].name, "\n")] = 0;
 
     printf("Product Genre: ");
-    gets(prod[*total].genre);
+    fgets(prod[*total].genre, 100, stdin);
+    prod[*total].genre[strcspn(prod[*total].genre, "\n")] = 0;
 
     printf("Product Quantity: ");
     getDigit(&prod[*total].quantity);
@@ -152,7 +219,7 @@ void addProduct(Product *prod, unsigned int *total, unsigned int *uid)
     (*total)++;
     (*uid)++;
     listProduct(prod, total);
-    writeFile(prod, total);
+    writeCSV(prod, total);
 }
 
 void deleteProduct(Product *prod, unsigned int *total)
@@ -181,7 +248,7 @@ void deleteProduct(Product *prod, unsigned int *total)
     {
         printf("Product with ID %d does not exist.\n", id);
     }
-    writeFile(prod, total);
+    writeCSV(prod, total);
 }
 
 void updateProduct(Product *prod, unsigned int *total)
@@ -211,6 +278,7 @@ void updateProduct(Product *prod, unsigned int *total)
         printf("%-20s: %10s -> ", "Product Name", prod[item].name);
         // fflush(stdin);
         fgets(input, 100, stdin);
+
         if (*input != '\n')
         {
             input[strcspn(input, "\n")] = 0;
@@ -220,6 +288,7 @@ void updateProduct(Product *prod, unsigned int *total)
         printf("%-20s: %10s -> ", "Product Genre", prod[item].genre);
         // fflush(stdin);
         fgets(input, 100, stdin);
+
         if (*input != '\n')
         {
             input[strcspn(input, "\n")] = 0;
@@ -266,9 +335,10 @@ void updateProduct(Product *prod, unsigned int *total)
     {
         printf("Product with ID %d does not exist.\n", id);
     }
-    writeFile(prod, total);
+    writeCSV(prod, total);
     free(input);
 }
+
 void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
 {
     Product result[10];
@@ -299,8 +369,8 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
     {
         printf("Name : ");
         fflush(stdin);
-        gets(string);
-
+        fgets(string, sizeof(string), stdin);
+        string[strcspn(string, "\n")] = 0;
         for (int i = 0; i < *total; i++)
         {
             if (strcmp(prod[i].name, string) == 0)
@@ -316,7 +386,8 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
     {
         printf("Genre : ");
         fflush(stdin);
-        gets(string);
+        fgets(string, sizeof(string), stdin);
+        string[strcspn(string, "\n")] = 0;
 
         for (int i = 0; i < *total; i++)
         {
@@ -361,10 +432,10 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
         listProduct(result, k);
         *k = 0;
     }
-
     free(string);
     free(k);
 }
+
 // // ----------------------------------------------------------------------------------------- Loop
 void searchMenu(Product *prod, unsigned int *total)
 {
@@ -421,15 +492,16 @@ void searchMenu(Product *prod, unsigned int *total)
     }
     free(input);
 }
+
 // ----------------------------------------------------------------------------------------- Initialize
 void initiate(Product *prod, unsigned int *total, unsigned int *uid, unsigned int *size)
 {
-    *total = totalProduct();
+    *total = totalProductCSV();
     if(*total > *size){
         *size = *total + 10;
         prod = realloc(prod, ((*size) * sizeof(Product)));
     }
-    readFile(prod);
+    readCSV(prod);
     *uid = (*total == 0) ? 0 : prod[*total - 1].id;
 }
 
@@ -462,6 +534,7 @@ int main(void)
         printf("| 0 | %-25s | \n", "Exit program");
         printf("--------------------------------- \n");
         printf("Actions : ");
+        fflush(stdin);
         scanf("%d", input);
         fflush(stdin);
         switch (*input)

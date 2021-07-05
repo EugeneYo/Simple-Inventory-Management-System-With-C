@@ -9,11 +9,7 @@
 unsigned int totalProduct()
 {
     int n = 0;
-    FILE *f;
-    f = fopen(DATA, "r");
-    if (!f)
-        printf("Can't open file\n");
-
+    FILE *f = fopen(DATA, "r");
     char line[256];
     while (fgets(line, sizeof(line), f))
     {
@@ -28,11 +24,7 @@ unsigned int totalProduct()
 }
 void writeFile(Product *prod, unsigned int *total)
 {
-    FILE *f;
-    f = fopen(DATA, "w");
-    if (!f)
-        printf("Can't open file\n");
-
+    FILE *f = fopen(DATA, "w");
     for (int i = 0; i < *total; i++)
     {
         fprintf(f, "%d\n", (prod + i)->id);
@@ -48,11 +40,7 @@ void writeFile(Product *prod, unsigned int *total)
 void readFile(Product *prod)
 {
     int n = 0;
-    FILE *f;
-    f = fopen(DATA, "r");
-    if (!f)
-        printf("Can't open file\n");
-
+    FILE *f = fopen(DATA, "r");
     char line[256];
     char *temp;
     while (fgets(line, sizeof(line), f))
@@ -108,7 +96,7 @@ void readCSV(Product *prod)
     {
         column = 0;
         row++;
-        
+
         if (row == 1)
             continue;
 
