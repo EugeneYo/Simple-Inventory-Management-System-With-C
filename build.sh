@@ -1,3 +1,5 @@
-gcc ./pointer_main.c -o pointer_main
+gcc ./single_main.c -o single_main
 
-[ -f ./pointer_main ] && ./pointer_main
+clear
+
+[ -f ./single_main ] && ./single_main

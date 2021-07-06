@@ -93,7 +93,7 @@ void updateProduct(Product *prod, unsigned int *total)
     unsigned int id;
     unsigned int exist = 0;
     unsigned int item;
-    char *input = (char *)malloc(128 * sizeof(char));
+    char input[128];
 
     listProduct(prod, total);
     printf("Please select the ID of the product to update : ");
@@ -171,19 +171,18 @@ void updateProduct(Product *prod, unsigned int *total)
         printf("Product with ID %d does not exist.\n", id);
     }
     writeCSV(prod, total);
-    free(input);
 }
 
-void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
+void searchProduct(Product *prod, unsigned int *total, unsigned int action)
 {
     Product result[10];
     unsigned int digit;
-    char *string = (char *)malloc(128 * sizeof(char));
+    char string[128];
     float number = 0;
     unsigned int *k = (unsigned int *)malloc(sizeof(unsigned int));
     *k = 0;
 
-    if (*action == 1)
+    if (action == 1)
     {
         printf("ID : ");
         getDigit(&digit);
@@ -199,7 +198,7 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
         listProduct(result, k);
         *k = 0;
     }
-    else if (*action == 2)
+    else if (action == 2)
     {
         printf("Name : ");
         fflush(stdin);
@@ -216,7 +215,7 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
         listProduct(result, k);
         *k = 0;
     }
-    else if (*action == 3)
+    else if (action == 3)
     {
         printf("Genre : ");
         fflush(stdin);
@@ -233,7 +232,7 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
         listProduct(result, k);
         *k = 0;
     }
-    else if (*action == 4)
+    else if (action == 4)
     {
         printf("Quantity : ");
         getDigit(&digit);
@@ -249,7 +248,7 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
         listProduct(result, k);
         *k = 0;
     }
-    else if (*action == 5)
+    else if (action == 5)
     {
         printf("Price : ");
         getFloat(&number);
@@ -265,8 +264,6 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
         listProduct(result, k);
         *k = 0;
     }
-
-    free(string);
     free(k);
 }
 

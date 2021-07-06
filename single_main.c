@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CSV "Inventory.csv"
-#define TXT "Inventory.txt"
+#define CSV "data/Inventory.csv"
+#define TXT "data/Inventory.txt"
 
 typedef struct
 {
@@ -437,6 +437,7 @@ void searchMenu(Product *prod, unsigned int *total)
 {
     unsigned short exit = 0;
     unsigned int input;
+    char string[10];
     while (!exit)
     {
         printf("--------------------------------- \n");
@@ -448,8 +449,8 @@ void searchMenu(Product *prod, unsigned int *total)
         printf("| 0 | %-25s | \n", "Back to Main Menu");
         printf("--------------------------------- \n");
         printf("Actions : ");
-        scanf("%d", &input);
-
+        gets(string);
+        input = atoi(string);
         fflush(stdin);
         while (1)
         {

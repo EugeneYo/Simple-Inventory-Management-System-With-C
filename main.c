@@ -13,7 +13,7 @@ void cleanup(Product **pointer)
 
 void searchMenu(Product *prod, unsigned int *total){
     unsigned short exit = 0;
-    unsigned int *input = (unsigned int *)malloc(sizeof(unsigned int));
+    unsigned int input;
 
     while (!exit)
     {
@@ -26,12 +26,12 @@ void searchMenu(Product *prod, unsigned int *total){
         printf("| 0 | %-25s | \n", "Back to Main Menu");
         printf("--------------------------------- \n");
         printf("Actions : ");
-        scanf("%d", input);
+        scanf("%d", &input);
 
         fflush(stdin);
         while (1)
         {
-            switch (*input)
+            switch (input)
             {
             case 0:
                 exit = 1;
@@ -63,7 +63,6 @@ void searchMenu(Product *prod, unsigned int *total){
             break;
         }
     }
-    free(input);
 }
 
 int main(void){

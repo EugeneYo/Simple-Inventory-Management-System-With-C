@@ -33,7 +33,7 @@ void writeFile(Product *prod, unsigned int *total)
         fputs((prod + i)->genre, f);
         fprintf(f, "\n");
         fprintf(f, "%d\n", (prod + i)->quantity);
-        fprintf(f, "%f\n", (prod + i)->price);
+        fprintf(f, "%.2f\n", (prod + i)->price);
     }
     fclose(f);
 }
@@ -82,7 +82,7 @@ void writeCSV(Product *prod, unsigned int *total)
     fprintf(f, "%s, %s, %s, %s, %s\n", "ID", "Name", "Genre", "Quantity", "Price");
     for (int i = 0; i < *total; i++)
     {
-        fprintf(f, "%d, %s, %s, %d, %f\n", prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod[i].price);
+        fprintf(f, "%d, %s, %s, %d, %.2f\n", prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod[i].price);
     }
     fclose(f);
 }

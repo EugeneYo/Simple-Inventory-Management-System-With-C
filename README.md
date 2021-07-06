@@ -12,7 +12,7 @@ git clone https://github.com/EugeneYo/Simple-Inventory-Management-System-With-C.
 
 - Direct download the project as a zip file then extract it.
 
-![](images/download.jpg)
+![Download](https://user-images.githubusercontent.com/31185780/124531447-1ca8d800-de41-11eb-9638-34d49356ca3f.jpg)
 
 ### For Windows
 
