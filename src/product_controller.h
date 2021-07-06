@@ -9,6 +9,6 @@ void addProduct(Product *prod, unsigned int *total, unsigned int *uid);
 void deleteProduct(Product *prod, unsigned int *total);
 void updateProduct(Product *prod, unsigned int *total);
 void searchProduct(Product *prod, unsigned int *total, unsigned int *action);
-void initiate(Product *prod, unsigned int *total, unsigned int *uid, unsigned int *size);
+Product *initiate(Product *prod, unsigned int *total, unsigned int *uid, unsigned int *size);
 
 #endif

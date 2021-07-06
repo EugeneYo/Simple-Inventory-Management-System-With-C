@@ -68,19 +68,13 @@ void searchMenu(Product *prod, unsigned int *total){
 
 int main(void){
     unsigned int *size = (unsigned int *)malloc(sizeof(unsigned int));
-    *size = 5;
-    Product *prod = (Product *)malloc((*size) * sizeof(Product));
     unsigned int *total = (unsigned int *)malloc(sizeof(unsigned int));
     unsigned int *uid = (unsigned int *)malloc(sizeof(unsigned int));
+    Product *prod = initiate(prod, total, uid, size);
 
+    unsigned int input;
+    unsigned short exit =  0;
 
-    unsigned int *input = (unsigned int *)malloc(sizeof(unsigned int));
-    unsigned short exit = 0;
-
-    initiate(prod, total, uid, size);
-
-    printf("Total After initiate: %d\n", *total);
-    printf("uid After initiate : %d\n", *uid);
     while (!exit)
     {
         printf("===== Inventory management system ===== \n");
@@ -93,9 +87,9 @@ int main(void){
         printf("| 0 | %-25s | \n", "Exit program");
         printf("--------------------------------- \n");
         printf("Actions : ");
-        scanf("%d", input);
+        scanf("%d", &input);
         fflush(stdin);
-        switch (*input)
+        switch (input)
         {
         case 0:
             printf("Exiting. \n");
@@ -107,11 +101,8 @@ int main(void){
             break;
         case 2:
             printf("Add New Product\n");
-            if ((*size - *total ) <= 1)
-            {
-                *size = *size + 10;
-                prod = realloc(prod, ((*size) * sizeof(Product)));
-            }
+            (*size)++;
+            prod = realloc(prod, ((*size) * sizeof(Product)));
             addProduct(prod, total, uid);
             break;
         case 3:
@@ -134,7 +125,6 @@ int main(void){
     free(prod);
     free(total);
     free(uid);
-    free(input);
     free(size);
     return 0;
 }

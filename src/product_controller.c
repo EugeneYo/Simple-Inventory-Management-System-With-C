@@ -30,14 +30,22 @@ void listProduct(Product *prod, unsigned int *total)
 
 void addProduct(Product *prod, unsigned int *total, unsigned int *uid)
 {
-
+    printf("UID: %d\n", *uid);
     prod[*total].id = *uid + 1;
 
     printf("Product Name: ");
     gets(prod[*total].name);
+    while(strcmp(prod[*total].name,"")==0){
+        printf("Product Name cannot be left empty ! Enter again : ");
+        gets(prod[*total].name);
+    }
 
     printf("Product Genre: ");
     gets(prod[*total].genre);
+    while(strcmp(prod[*total].genre,"")==0){
+        printf("Product Genre cannot be left empty ! Enter again : ");
+        gets(prod[*total].genre);
+    }
 
     printf("Product Quantity: ");
     getDigit(&prod[*total].quantity);
@@ -188,7 +196,6 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
                 (*k)++;
             }
         }
-        printf("k is %d\n", *k);
         listProduct(result, k);
         *k = 0;
     }
@@ -263,13 +270,14 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *action)
     free(k);
 }
 
-void initiate(Product *prod, unsigned int *total, unsigned int *uid, unsigned int *size)
+Product *initiate(Product *prod, unsigned int *total, unsigned int *uid, unsigned int *size)
 {
     *total = totalProductCSV();
-    if(*total > *size){
-        *size = *total + 10;
-        prod = realloc(prod, ((*size) * sizeof(Product)));
-    }
+    *size = *total + 1;
+    prod = (Product *)malloc((*size) * sizeof(Product));
     readCSV(prod);
-    *uid = (*total == 0) ? 0 : prod[*total - 1].id;
+    *uid = (*total == 0) ? 0 : prod[*total-1].id;
+    printf("UID : %d\n", *uid);
+    return prod;
 }
+

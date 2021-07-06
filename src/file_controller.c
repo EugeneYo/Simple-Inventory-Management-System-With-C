@@ -68,12 +68,12 @@ void readFile(Product *prod)
 
 unsigned int totalProductCSV()
 {
-    int n = 0;
+    int n = -1;
     FILE *f = fopen(CSV, "r");
     char line[256];
-    while (fgets(line, sizeof(line), f))
-        n++;
+    while (fgets(line, sizeof(line), f)) n++;
     fclose(f);
+    n = (n == -1) ? 0 : n;
     return n;
 }
 void writeCSV(Product *prod, unsigned int *total)
@@ -89,14 +89,14 @@ void writeCSV(Product *prod, unsigned int *total)
 void readCSV(Product *prod)
 {
     FILE *f = fopen(CSV, "r");
-    char string[1024];
+    char string[2048];
     int row = 0;
     int column = 0;
-    while (fgets(string, 1024, f))
+    while (fgets(string, 2048, f))
     {
         column = 0;
         row++;
-
+        // Skip the header row
         if (row == 1)
             continue;
 
@@ -104,21 +104,16 @@ void readCSV(Product *prod)
         char *value = strtok(string, ", ");
         while (value)
         {
-            if (column == 0)
-                prod[row - 1].id = atoi(value);
+            if (column == 0) prod[row - 2].id = atoi(value); // ID
+            
+            if (column == 1) strcpy(prod[row - 2].name, value); // Name
+            
+            if (column == 2) strcpy(prod[row - 2].genre, value); // Genre
+            
+            if (column == 3) prod[row - 2].quantity = atoi(value); // Quantity
 
-            if (column == 1)
-                strcpy(prod[row - 1].name, value);
-
-            if (column == 2)
-                strcpy(prod[row - 1].genre, value);
-
-            if (column == 3)
-                prod[row - 1].quantity = atoi(value);
-
-            if (column == 4)
-                prod[row - 1].price = atof(value);
-
+            if (column == 4) prod[row - 2].price = atof(value); // Price
+            
             value = strtok(NULL, ", ");
             column++;
         }
