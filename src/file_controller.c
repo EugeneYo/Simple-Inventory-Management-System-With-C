@@ -1,71 +1,17 @@
+#include <file_controller.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "product_controller.h"
-#include "file_controller.h"
-
-unsigned int totalProduct()
-{
-    int n = 0;
-    FILE *f = fopen(DATA, "r");
+void readINI(unsigned int *viewLimit){
+    FILE *f = fopen(INI, "r");
     char line[256];
-    while (fgets(line, sizeof(line), f))
-    {
-        fgets(line, sizeof(line), f);
-        fgets(line, sizeof(line), f);
-        fgets(line, sizeof(line), f);
-        fgets(line, sizeof(line), f);
-        n++;
-    }
-    fclose(f);
-    return n;
-}
-void writeFile(Product *prod, unsigned int *total)
-{
-    FILE *f = fopen(DATA, "w");
-    for (int i = 0; i < *total; i++)
-    {
-        fprintf(f, "%d\n", (prod + i)->id);
-        fputs((prod + i)->name, f);
-        fprintf(f, "\n");
-        fputs((prod + i)->genre, f);
-        fprintf(f, "\n");
-        fprintf(f, "%d\n", (prod + i)->quantity);
-        fprintf(f, "%.2f\n", (prod + i)->price);
+    while (fgets(line, sizeof(line), f)){
+        char *value = strtok(line, " = ");
+        // printf("First Value : %s", value); // ViewLimit
+        value = strtok(NULL, " = ");// 10
+        *viewLimit = atoi(value);
+        // printf("Second Value : %s", value);
     }
     fclose(f);
 }
-void readFile(Product *prod)
-{
-    int n = 0;
-    FILE *f = fopen(DATA, "r");
-    char line[256];
-    char *temp;
-    while (fgets(line, sizeof(line), f))
-    {
-        prod[n].id = atoi(line);
-
-        fgets(line, sizeof(line), f);
-        line[strcspn(line, "\n")] = 0;
-        strcpy(prod[n].name, line);
-
-        fgets(line, sizeof(line), f);
-        line[strcspn(line, "\n")] = 0;
-        strcpy(prod[n].genre, line);
-
-        fgets(line, sizeof(line), f);
-        prod[n].quantity = atoi(line);
-
-        fgets(line, sizeof(line), f);
-        prod[n].price = atof(line);
-
-        n++;
-    }
-    fclose(f);
-}
-
 unsigned int totalProductCSV()
 {
     int n = -1;

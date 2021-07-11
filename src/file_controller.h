@@ -1,16 +1,18 @@
 #ifndef FILE_CONTROLLER_H
 #define FILE_CONTROLLER_H
 
-#include "../model/product.h"
-#include "../ansi_color/color.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <product.h>
+#include <color.h>
 
 #define DATA "data/Inventory.txt"
 #define CSV "data/Inventory.csv"
+#define INI "config.ini"
 
-unsigned int totalProduct();
-void writeFile(Product *prod, unsigned int *total);
-void readFile(Product *prod);
-
+void readINI(unsigned int *viewLimit);
 unsigned int totalProductCSV();
 void writeCSV(Product *prod, unsigned int *total);
 void readCSV(Product *prod);

@@ -1,14 +1,23 @@
 #ifndef PRODUCT_CONTROLLER_H
 #define PRODUCT_CONTROLLER_H
 
-#include "../model/product.h"
-#include "../ansi_color/color.h"
 
-void listProduct(Product *prod, unsigned int *total);
-void addProduct(Product *prod, unsigned int *total, unsigned int *uid);
-void deleteProduct(Product *prod, unsigned int *total);
-void updateProduct(Product *prod, unsigned int *total);
-void searchProduct(Product *prod, unsigned int *total, unsigned int action);
-Product *initiate(Product *prod, unsigned int *total, unsigned int *uid, unsigned int *size);
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+#include <file_controller.h>
+#include <input_validation.h>
+#include <product.h>
+#include <color.h>
+
+void simpleView(Product *prod, unsigned int *total, unsigned int *viewLimit, unsigned int target);
+void listProduct(Product *prod, unsigned int *total,unsigned int *viewLimit);
+void addProduct(Product *prod, unsigned int *total, unsigned int *uid, unsigned int *viewLimit);
+void deleteProduct(Product *prod, unsigned int *total, unsigned int *viewLimit);
+void updateProduct(Product *prod, unsigned int *total, unsigned int *viewLimit);
+void searchProduct(Product *prod, unsigned int *total, unsigned int *viewLimit, unsigned int action);
+Product *initiate(Product *prod, unsigned int *total, unsigned int *uid, unsigned int *size,unsigned int *viewLimit);
 
 #endif

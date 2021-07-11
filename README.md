@@ -1,5 +1,7 @@
 # Simple Inventory Management System with C
 
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/EugeneYo/Simple-Inventory-Management-System-With-C)
+
 ## Install Instructions
 
 - Either using `git clone`
@@ -16,16 +18,19 @@ git clone https://github.com/EugeneYo/Simple-Inventory-Management-System-With-C.
 
 ### For Windows
 
-- After the project is downloaded or cloned, run the following command
+- After the project is downloaded or cloned, go into the project root directory
+- run the following command
 
 ```
 .\build.bat
 ```
 
+<!--
 ### For Linux
 
-- After the project is downloaded or cloned, run the following command
+- After the project is downloaded or cloned,go into the project root directory
+- run the following command
 
 ```
 ./build.sh
-```
+``` -->
