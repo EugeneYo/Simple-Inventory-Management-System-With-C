@@ -8,15 +8,16 @@ void simpleView(Product *prod, unsigned int *total ,unsigned int *viewLimit, uns
     unsigned int lastPageRemain = *total % *viewLimit;
     totalPage = ( lastPageRemain > 0) ? totalPage + 1 : totalPage;
     unsigned int start =  (page - 1) * (*viewLimit);
-    unsigned int end = (totalPage == page ) ? start + lastPageRemain  :start + *viewLimit;
+    unsigned int end = (totalPage == page ) ? (lastPageRemain == 0)? start+ *viewLimit :start + lastPageRemain  :start + *viewLimit;
 
-    // printf("Target : %d\n", target);
-    // printf("remain : %d\n", remain);
-    // printf("page : %d\n", page);
-    // printf("total : %d\n", *total);
-    // printf("totalPage : %d\n", totalPage);
-    // printf("start : %d\n", start);
-    // printf("end : %d\n", end);
+    printf("Target : %d\n", target);
+    printf("remain : %d\n", remain);
+    printf("page : %d\n", page);
+    printf("total : %d\n", *total);
+    printf("totalPage : %d\n", totalPage);
+    printf("lastPageRemain : %d\n", lastPageRemain);
+    printf("start : %d\n", start);
+    printf("end : %d\n", end);
 
 
 
