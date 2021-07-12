@@ -28,4 +28,5 @@ ID, Name, Genre, Quantity, Price
 28, 2, 2, 2, 2.00
 29, 2, 22, 2, 2.00
 30, 2, 2, 22, 2.00
-32, Test, last, 12, 12.00
+34, new, new, 12, 12.00
+35, yes, yes, 12, 12.00

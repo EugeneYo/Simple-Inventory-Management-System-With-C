@@ -3,21 +3,25 @@
 void simpleView(Product *prod, unsigned int *total ,unsigned int *viewLimit, unsigned int target){
     target++;
     unsigned int remain = (target % *viewLimit); // the exact number on the list of the current page
-    unsigned int page = (remain > 0) ? (target / *viewLimit + 1) :  (target / *viewLimit) ; // current page of the target product
-    unsigned int totalPage = *total / *viewLimit;
     unsigned int lastPageRemain = *total % *viewLimit;
-    totalPage = ( lastPageRemain > 0) ? totalPage + 1 : totalPage;
-    unsigned int start =  (page - 1) * (*viewLimit);
-    unsigned int end = (totalPage == page ) ? (lastPageRemain == 0)? start+ *viewLimit :start + lastPageRemain  :start + *viewLimit;
+    unsigned int page = (remain > 0) ? (target / *viewLimit + 1) :  (target / *viewLimit) ; // current page of the target product
 
-    printf("Target : %d\n", target);
-    printf("remain : %d\n", remain);
-    printf("page : %d\n", page);
-    printf("total : %d\n", *total);
-    printf("totalPage : %d\n", totalPage);
-    printf("lastPageRemain : %d\n", lastPageRemain);
-    printf("start : %d\n", start);
-    printf("end : %d\n", end);
+    unsigned int totalPage = *total / *viewLimit;
+    totalPage = ( lastPageRemain > 0) ? totalPage + 1 : totalPage;
+
+    unsigned int start =  (page - 1) * (*viewLimit);
+
+    unsigned int end = (lastPageRemain == 0) ? start + *viewLimit : start + lastPageRemain;
+    end = (totalPage == page ) ?  end :start + *viewLimit; // 'end' depends on target's page
+
+    // printf("Target : %d\n", target);
+    // printf("remain : %d\n", remain);
+    // printf("page : %d\n", page);
+    // printf("total : %d\n", *total);
+    // printf("totalPage : %d\n", totalPage);
+    // printf("lastPageRemain : %d\n", lastPageRemain);
+    // printf("start : %d\n", start);
+    // printf("end : %d\n", end);
 
 
 
