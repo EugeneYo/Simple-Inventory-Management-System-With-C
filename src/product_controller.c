@@ -19,6 +19,7 @@ void simpleView(Product *prod, unsigned int *total ,unsigned int *viewLimit, uns
     // printf("end : %d\n", end);
 
 
+
     printf(" \t\t\t***** INVENTORY *****\n");
     printf("------------------------------------------------------------------\n");
     printf("S.N.|    %-5s|  %-10s|  %-10s| %-10s|  %-10s|\n", "ID", "Name", "Genre", "Quantity", "Price");
