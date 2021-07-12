@@ -1,12 +1,16 @@
 #include <product_controller.h>
 
 void simpleView(Product *prod, unsigned int *total ,unsigned int *viewLimit, unsigned int target){
+    target++;
+    unsigned int remain = ((target) % *viewLimit); // the exact number on the list of the current page
     unsigned int page = (target / *viewLimit) ; // current page of the target product
-    unsigned int remain = (target % *viewLimit); // the exact number on the list of the current page
-    unsigned int totalPage = (*total > *viewLimit) ? ((remain > 0) ? ((*total / *viewLimit) + 1) : (*total / *viewLimit)) : 1 ;
+    unsigned int totalPage = (*total > *viewLimit) ? (remain > 0) ? (*total/ *viewLimit + 1): (*total / *viewLimit) : 1 ;
     unsigned int start = (remain > 0) ? page * (*viewLimit) : (page - 1) * (*viewLimit);
 
-    unsigned int end = (*total > *viewLimit) ? ((totalPage - page)>0) ? (start + (*viewLimit)) : (start + remain)   : target;
+    unsigned int end = ((totalPage == page + 1) ? (start + remain) : (start + *viewLimit));
+    end = (*total > *viewLimit) ? end : target;
+
+
 
     printf(" \t\t\t***** INVENTORY *****\n");
     printf("------------------------------------------------------------------\n");
@@ -15,12 +19,19 @@ void simpleView(Product *prod, unsigned int *total ,unsigned int *viewLimit, uns
 
     for (int i = start; i < end; i++)
     {
-        (i == target) ?
+        (i == target-1) ?
             printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f| UPDATED\n", i + 1, prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod[i].price) :
             printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f|\n", i + 1, prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod[i].price);
         
     }
     printf("------------------------------------------------------------------\n\n");
+    printf("target : %d\n", target);
+    printf("Total : %d\n", *total);
+    printf("Page : %d\n", page);
+    printf("remain : %d\n", remain);
+    printf("totalPage : %d\n", totalPage);
+    printf("start : %d\n", start);
+    printf("end : %d\n", end);
 }
 
 void listProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
@@ -81,7 +92,9 @@ void listProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
             }
 
             start = (page) * (*viewLimit);
-            end = (totalPage == page+1) ? (start + remain) : (start + (*viewLimit));
+            end = (remain > 0) ? (start + remain) : (start + *viewLimit);
+            end = (totalPage == page+1) ? end : (start + (*viewLimit));
+
         }else{
             state = 0;
         }
@@ -114,9 +127,9 @@ void addProduct(Product *prod, unsigned int *total, unsigned int *uid, unsigned 
     printf("Product Price: ");
     getFloat(&prod[*total].price);
 
+    unsigned int target = (*total);
     (*total)++;
     (*uid)++;
-    unsigned int target = (*total);
     simpleView(prod, total, viewLimit, target);
     // listProduct(prod, total, viewLimit);
     writeCSV(prod, total);
@@ -213,7 +226,7 @@ void updateProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
             }
             else
             {
-                prod[item].price = atoi(input);
+                prod[item].quantity = atoi(input);
             }
         }
 
