@@ -25,13 +25,7 @@ void simpleView(Product *prod, unsigned int *total ,unsigned int *viewLimit, uns
         
     }
     printf("------------------------------------------------------------------\n\n");
-    printf("target : %d\n", target);
-    printf("Total : %d\n", *total);
-    printf("Page : %d\n", page);
-    printf("remain : %d\n", remain);
-    printf("totalPage : %d\n", totalPage);
-    printf("start : %d\n", start);
-    printf("end : %d\n", end);
+
 }
 
 void listProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
