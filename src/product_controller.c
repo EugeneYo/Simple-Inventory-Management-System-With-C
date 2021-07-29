@@ -1,6 +1,6 @@
 #include <product_controller.h>
 
-void simpleView(Product *prod, unsigned int *total ,unsigned int *viewLimit, unsigned int target){
+void simpleView(Product *prod, unsigned int *total ,unsigned int *viewLimit, unsigned int target, unsigned int type){
     target++;
     unsigned int remain = (target % *viewLimit); // the exact number on the list of the current page
     unsigned int lastPageRemain = *total % *viewLimit;
@@ -25,16 +25,31 @@ void simpleView(Product *prod, unsigned int *total ,unsigned int *viewLimit, uns
 
 
 
-    printf(" \t\t\t***** INVENTORY *****\n");
+    printf(CYN" \t\t\t***** INVENTORY *****\n" reset);
     printf("------------------------------------------------------------------\n");
-    printf("S.N.|    %-5s|  %-10s|  %-10s| %-10s|  %-10s|\n", "ID", "Name", "Genre", "Quantity", "Price");
+    printf("S.N.|    %-5s|  %-10s|  %-10s| %-10s|  %-10s|\n", "ID", "Name", "Category", "Quantity", "Price");
     printf("------------------------------------------------------------------\n");
 
     for (int i = start; i < end; i++)
     {
-        (i == target-1) ?
-            printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f| UPDATED\n", i + 1, prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod[i].price) :
-            printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f|\n", i + 1, prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod[i].price);
+        // (i == target-1) ?
+        //     (type == 0) ?
+        //     printf(GRN "%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f| ADDED\n" reset, i + 1, prod[i].id, prod[i].name, prod[i].category, prod[i].quantity, prod[i].price) : 
+        //     printf(GRN "%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f| UPDATED\n" reset, i + 1, prod[i].id, prod[i].name, prod[i].category, prod[i].quantity, prod[i].price) :
+        //     printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f|\n", i + 1, prod[i].id, prod[i].name, prod[i].category, prod[i].quantity, prod[i].price);
+        
+        if(i == target - 1){
+            if(type == 0){
+                printf(GRN "%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f| ADDED\n" reset, i + 1, prod[i].id, prod[i].name, prod[i].category, prod[i].quantity, prod[i].price);
+            }else if (type == 1){
+                printf(GRN "%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f| UPDATED\n" reset, i + 1, prod[i].id, prod[i].name, prod[i].category, prod[i].quantity, prod[i].price);
+            }else{
+                printf(RED "%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f| DELETED\n" reset, 0, 0, "Product", "is Null", 0, 0.00);
+                printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f|\n", i + 1, prod[i].id, prod[i].name, prod[i].category, prod[i].quantity, prod[i].price);
+            }
+        }else{
+            printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f|\n", i + 1, prod[i].id, prod[i].name, prod[i].category, prod[i].quantity, prod[i].price);
+        }
         
     }
     printf("------------------------------------------------------------------\n\n");
@@ -57,28 +72,30 @@ void listProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
 
     if (*total == 0)
     {
-        printf("No products to view\n");
+        printf(RED"No products to view\n" reset);
+        printf("Press enter to continue...");
+        int c = getchar();
+        ClearScreen();
         return;
     }
 
 
     while(state){
-        printf("Total Pages : %d\n", totalPage);
-        printf(" \t\t\t***** INVENTORY *****\n");
+        printf(CYN" \t\t\t***** INVENTORY *****\n"reset);
         printf("------------------------------------------------------------------\n");
-        printf("S.N.|    %-5s|  %-10s|  %-10s| %-10s|  %-10s|\n", "ID", "Name", "Genre", "Quantity", "Price");
+        printf("S.N.|    %-5s|  %-10s|  %-10s| %-10s|  %-10s|\n", "ID", "Name", "Category", "Quantity", "Price");
         printf("------------------------------------------------------------------\n");
 
         for (unsigned int i = start; i < end; i++)
         {
-            printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f|\n", i + 1, prod[i].id, prod[i].name, prod[i].genre, prod[i].quantity, prod  [i].price);
+            printf("%-4d|    %-5d|  %-10s|  %-10s| %-10d|  %-10.2f|\n", i + 1, prod[i].id, prod[i].name, prod[i].category, prod[i].quantity, prod  [i].price);
         }
         printf("------------------------------------------------------------------\n\n"); 
         
         // Asking for pages to view only if
         if(*total > *viewLimit){
-            printf("Current Page : %d\n", page + 1);
-            printf("Which page to view: ");
+            printf("Current Page : "YEL"%-34d"reset" Total Pages: "RED"%d\n"reset, page+1 ,totalPage);
+            printf("Which page to view (Enter nothing to skip): ");
             unsigned int ask = 1;
             while (ask)
             {
@@ -90,11 +107,13 @@ void listProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
                 }
                 input[strcspn(input, "\n")] = 0;
                 if(atoi(input) == 0 || atoi(input) > totalPage){
-                    printf("Invalid input ! Enter again : ");
+                    printf(RED "Invalid Input !" reset " Enter again : ");
                     ask = 1;
                 }else{
                     page = atoi(input)-1;
                     ask = 0;
+                    ClearScreen();
+
                 }
             }
 
@@ -104,28 +123,30 @@ void listProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
 
         }else{
             state = 0;
+            printf("Press enter to continue...");
+            int c = getchar();
+            ClearScreen();
         }
     }
-    
 }
 
 void addProduct(Product *prod, unsigned int *total, unsigned int *uid, unsigned int *viewLimit)
 {
-    printf("UID: %d\n", *uid);
     prod[*total].id = *uid + 1;
+    printf("UID: %d\n",prod[*total].id);
 
     printf("Product Name: ");
     gets(prod[*total].name);
     while(strcmp(prod[*total].name,"")==0){
-        printf("Product Name cannot be left empty ! Enter again : ");
+        printf(RED"Product Name cannot be left empty !"reset" Enter again : ");
         gets(prod[*total].name);
     }
 
-    printf("Product Genre: ");
-    gets(prod[*total].genre);
-    while(strcmp(prod[*total].genre,"")==0){
-        printf("Product Genre cannot be left empty ! Enter again : ");
-        gets(prod[*total].genre);
+    printf("Product Category: ");
+    gets(prod[*total].category);
+    while(strcmp(prod[*total].category,"")==0){
+        printf(RED"Product category cannot be left empty !"reset" Enter again : ");
+        gets(prod[*total].category);
     }
 
     printf("Product Quantity: ");
@@ -137,7 +158,14 @@ void addProduct(Product *prod, unsigned int *total, unsigned int *uid, unsigned 
     unsigned int target = (*total);
     (*total)++;
     (*uid)++;
-    simpleView(prod, total, viewLimit, target);
+    
+    ClearScreen();
+    simpleView(prod, total, viewLimit, target, 0);
+    printf(GRN"Product with ID %d added successfully\n\n"reset, prod[*total - 1].id);
+
+    printf("Press enter to continue...");
+    int c = getchar();
+    ClearScreen();
     // listProduct(prod, total, viewLimit);
     writeCSV(prod, total);
 }
@@ -146,35 +174,40 @@ void deleteProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
 {
     unsigned int id;
     unsigned int exist = 0;
+    unsigned int item = 0;
     listProduct(prod, total, viewLimit);
     printf("Please select the ID of the product to delete : ");
     getDigit(&id);
 
     for (int i = 0; i < *total; i++)
     {
-        
-        // (prod[i].id == id)  ? (exist = 1) : -1;
-        // (exist==1) ? prod[i] = prod[i + 1] : prod[i];
-
-        if (prod[i].id == id)
+        if (prod[i].id == id){
             exist = 1;
+            item = i;
+        }
         if (exist)
             prod[i] = prod[i + 1];
     }
 
     if (exist)
     {
-        printf("Product with ID %d deleted successfully\n", id);
+        ClearScreen();
         (*total)--;
+        writeCSV(prod, total);
+        simpleView(prod, total, viewLimit, item, 2);
+        printf(CYN"Product with ID %d deleted successfully\n"reset, id);
+
+        printf("\nPress enter to continue...");
+        int c = getchar();
+        ClearScreen();
     }
     else
     {
-        printf("Product with ID %d does not exist.\n", id);
+        printf(RED"Product with ID %d does not exist.\n"reset, id);
+        printf("\nPress enter to continue...");
+        int c = getchar();
+        ClearScreen();
     }
-    unsigned int result;
-    result = (exist == 1) ? (*total) - 1 && printf("Product with ID %d deleted successfully\n", id) : printf("Product with ID %d does not exist.\n", id);
-    printf("Result : %d\n", result);
-    writeCSV(prod, total);
 }
 
 void updateProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
@@ -201,8 +234,8 @@ void updateProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
     {
         prod[item].id = id;
         printf("- Type 'Enter' to skip and the data will remain the same.\n");
-        printf("%22s%10s -> %-10s\n", "", "[Old]", "[New]");
-        printf("%-20s: %10s -> ", "Product Name", prod[item].name);
+        printf("%22s"YEL"%10s"reset" -> "CYN"%-10s"reset"\n", "", "[Old]", "[New]");
+        printf("%-20s: "YEL"%10s"reset" -> "CYN, "Product Name", prod[item].name);
         // fflush(stdin);
         fgets(input, 100, stdin);
         if (*input != '\n')
@@ -211,16 +244,16 @@ void updateProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
             strcpy(prod[item].name, input);
         }
 
-        printf("%-20s: %10s -> ", "Product Genre", prod[item].genre);
+        printf(reset"%-20s: "YEL"%10s"reset" -> "CYN, "Product Category", prod[item].category);
         // fflush(stdin);
         fgets(input, 100, stdin);
         if (*input != '\n')
         {
             input[strcspn(input, "\n")] = 0;
-            strcpy(prod[item].genre, input);
+            strcpy(prod[item].category, input);
         }
 
-        printf("%-20s: %10d -> ", "Product Quantity", prod[item].quantity);
+        printf(reset"%-20s: "YEL"%10d"reset" -> "CYN, "Product Quantity", prod[item].quantity);
         // fflush(stdin);
         fgets(input, 100, stdin);
         if (*input != '\n')
@@ -228,7 +261,7 @@ void updateProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
             input[strcspn(input, "\n")] = 0;
             if (atoi(input) == 0)
             {
-                printf("Invalid input ! Enter again : ");
+                printf(RED"Invalid input !"reset" Enter again : "CYN);
                 getDigit(&prod[item].quantity);
             }
             else
@@ -237,7 +270,7 @@ void updateProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
             }
         }
 
-        printf("%-20s: %10.2f -> ", "Product Price", prod[item].price);
+        printf(reset"%-20s: "YEL"%10.2f"reset" -> "CYN, "Product Price", prod[item].price);
         // fflush(stdin);
         fgets(input, 100, stdin);
         if (*input != '\n')
@@ -245,7 +278,7 @@ void updateProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
             input[strcspn(input, "\n")] = 0;
             if (atof(input) == 0)
             {
-                printf("Invalid input ! Enter again : ");
+                printf(RED"Invalid input !"reset" Enter again : "CYN);
                 getFloat(&prod[item].price);
             }
             else
@@ -254,13 +287,22 @@ void updateProduct(Product *prod, unsigned int *total, unsigned int *viewLimit)
             }
         }
 
-        printf("Product with ID %d updated successfully.\n", id);
+        printf(reset);
+        ClearScreen();
+        simpleView(prod, total, viewLimit, item, 1);
+        printf(GRN"Product with ID %d updated successfully.\n"reset, id);
+
+        printf("\nPress enter to continue...");
+        int c = getchar();
+        ClearScreen();
     }
     else
     {
-        printf("Product with ID %d does not exist.\n", id);
+        printf(RED"Product with ID %d does not exist.\n"reset, id);
+        printf("\nPress enter to continue...");
+        int c = getchar();
+        ClearScreen();
     }
-    simpleView(prod, total, viewLimit, item);
     writeCSV(prod, total);
 }
 
@@ -317,13 +359,13 @@ void searchProduct(Product *prod, unsigned int *total, unsigned int *viewLimit ,
     }
     else if (action == 3)
     {
-        printf("Genre : ");
+        printf("Category : ");
         fflush(stdin);
         gets(string);
 
         for (int i = 0; i < *total; i++)
         {
-            if (strcmp(prod[i].genre, string) == 0)
+            if (strcmp(prod[i].category, string) == 0)
             {
                 result[*k] = prod[i];
                 (*k)++;

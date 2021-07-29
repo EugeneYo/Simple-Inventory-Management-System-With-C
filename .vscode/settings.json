@@ -1,7 +1,0 @@
-{
-	"files.associations": {
-		"*.php": "php",
-		"*.blade.php": "blade",
-		"product_controller.h": "c"
-	}
-}
