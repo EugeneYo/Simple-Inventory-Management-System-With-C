@@ -2,15 +2,28 @@
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/EugeneYo/Simple-Inventory-Management-System-With-C)
 
+# Table of Contents
+
+- [Install Instructions](#install-instructions)
+    - [For Windows](#for-windows)
+- [Preview](#preview)
+  - [Main Menu](#main-menu)
+  - [Options Available](#options-available)
+      - [1. View Existing Products](#1-view-existing-products)
+      - [2. Add New Product](#2-add-new-product)
+      - [3. Update Existing Products](#3-update-existing-products)
+      - [4. Delete Existing Product](#4-delete-existing-product)
+      - [5. Search Existing Product](#5-search-existing-product)
+- [Mock Data](#mock-data)
+- [About](#about)
+
 # Install Instructions
 
-- Either using `git clone`
+- Either using `git clone` or
 
 ```
 git clone https://github.com/EugeneYo/Simple-Inventory-Management-System-With-C.git
 ```
-
-#### or
 
 - Direct download the project as a zip file then extract it.
 
@@ -65,13 +78,11 @@ git clone https://github.com/EugeneYo/Simple-Inventory-Management-System-With-C.
 # Mock Data
 
 - Data used to shown in the preview are generated from `mackaroo`
-- Enter the following command into console to generate mock data
+- Enter the following command into console to generate mock data or
 
 ```
 curl "https://api.mockaroo.com/api/5317dd60?count=1000&key=e8d8ec90" > "Inventory.csv"
 ```
-
-#### or
 
 - Click this to generate the data you want : [Schema for this system](https://www.mockaroo.com/schemas/328195)
 - I suggest not to change the `Field Name` set, but change only the options limiting the `Field Name` available
