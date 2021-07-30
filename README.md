@@ -1,6 +1,6 @@
-# Simple Inventory Management System with C
+# Simple Inventory Management System with C  [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/EugeneYo/Simple-Inventory-Management-System-With-C)
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/EugeneYo/Simple-Inventory-Management-System-With-C)
+
 
 # Table of Contents
 
