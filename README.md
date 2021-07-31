@@ -1,19 +1,25 @@
-# Simple Inventory Management System with C  [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/EugeneYo/Simple-Inventory-Management-System-With-C)
+# Simple Inventory Management System with C [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/EugeneYo/Simple-Inventory-Management-System-With-C)
 
+# Description
 
+- This system was built to organize the inventory
+- Five fields (or columns) for each product are ID, Name, Category, Quantity and Price.
+- Data are stored in csv format. Data are stored at `{root}/data/Inventory.csv`
+- Examples are shown at [here](#preview)
 
 # Table of Contents
 
+
 - [Install Instructions](#install-instructions)
-    - [For Windows](#for-windows)
+  - [For Windows](#for-windows)
 - [Preview](#preview)
   - [Main Menu](#main-menu)
   - [Options Available](#options-available)
-      - [1. View Existing Products](#1-view-existing-products)
-      - [2. Add New Product](#2-add-new-product)
-      - [3. Update Existing Products](#3-update-existing-products)
-      - [4. Delete Existing Product](#4-delete-existing-product)
-      - [5. Search Existing Product](#5-search-existing-product)
+    - [1. View Existing Products](#1-view-existing-products)
+    - [2. Add New Product](#2-add-new-product)
+    - [3. Update Existing Products](#3-update-existing-products)
+    - [4. Delete Existing Product](#4-delete-existing-product)
+    - [5. Search Existing Product](#5-search-existing-product)
 - [Mock Data](#mock-data)
 - [About](#about)
 
